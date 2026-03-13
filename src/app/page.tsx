@@ -20,20 +20,22 @@ const emotions: Record<Emotion, { label: string; emoji: string; situation: strin
   punch:  { label: "punch",  emoji: "👊", situation: "tmi : Oseong은 두 달동안 복싱을 다녔다", quote: "아 원투 원투" },
 };
 
+const emotionKeys = Object.keys(emotions) as Emotion[];
+
 export default function Home() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefs = useRef<Record<Emotion, HTMLVideoElement | null>>({} as Record<Emotion, HTMLVideoElement | null>);
   const introRef = useRef<HTMLDivElement>(null);
   const [emotion, setEmotion] = useState<Emotion>("stay");
   const [introVisible, setIntroVisible] = useState(true);
 
   const handleEmotion = (e: Emotion) => {
+    const prev = videoRefs.current[emotion];
+    if (prev) prev.pause();
     setEmotion(e);
-    if (videoRef.current) {
-      videoRef.current.src = `/${e}.webm`;
-      videoRef.current.play();
-    }
+    const next = videoRefs.current[e];
+    if (next) { next.currentTime = 0; next.play(); }
   };
 
   useEffect(() => {
@@ -113,16 +115,23 @@ export default function Home() {
           <div className="header-left">
             <div style={{ position: "relative", width: "100%", maxWidth: 500, height: 500 }}>
               <div className="video-blob" />
-              <video
-                ref={videoRef}
-                src="/stay.webm"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                style={{ width: "100%", height: 500, objectFit: "contain", position: "relative", zIndex: 1 }}
-              />
+              {emotionKeys.map((e) => (
+                <video
+                  key={e}
+                  ref={(el) => { videoRefs.current[e] = el; }}
+                  src={`/${e}.webm`}
+                  autoPlay={e === "stay"}
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  style={{
+                    width: "100%", height: 500, objectFit: "contain",
+                    position: "absolute", top: 0, left: 0, zIndex: 1,
+                    display: emotion === e ? "block" : "none",
+                  }}
+                />
+              ))}
             </div>
 
             {/* Emotion buttons (text only) */}
