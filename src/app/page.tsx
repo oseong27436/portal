@@ -123,9 +123,10 @@ export default function Home() {
               <h1
                 ref={titleRef}
                 className="header-title font-windsor"
-                style={{ opacity: 0, transform: "translateY(40px)", marginBottom: 12 }}
+                style={{ opacity: 0, transform: "translateY(40px)", marginBottom: 12, display: "flex", alignItems: "baseline", gap: 12 }}
               >
                 <span className="highlight">Oseong</span>
+                <span style={{ fontSize: "0.4em", fontFamily: "'IBM Plex Mono', monospace", color: "#999", fontWeight: "normal" }}>(26살)</span>
               </h1>
               <p className="emotion-situation">{emotions[emotion].situation}</p>
               {emotions[emotion].quote && <p className="emotion-quote">"{emotions[emotion].quote}"</p>}
@@ -133,28 +134,10 @@ export default function Home() {
 
             {/* Meta info */}
             <div className="meta-info">
-              <div style={{ marginBottom: 24 }}>
+              <div>
                 <div className="meta-label">About</div>
-                <div>직접 쓰고 싶어서 만드는 개발자.<br />아이디어를 코드로 바꾸는 걸 좋아해.</div>
+                <div>아이디어가 있으면 만들어내야만 하는 성격.</div>
               </div>
-              <div style={{ marginBottom: 24 }}>
-                <div className="meta-label">Based in</div>
-                <div>Seoul, Korea</div>
-              </div>
-              <div style={{ marginBottom: 24 }}>
-                <div className="meta-label">Year</div>
-                <div>2026</div>
-              </div>
-              <div style={{ marginBottom: 24 }}>
-                <div className="meta-label">Role</div>
-                <div>Developer</div>
-              </div>
-              <a href="https://github.com/oseong27436" target="_blank" rel="noopener noreferrer" className="visit-btn">
-                GitHub
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M7 17L17 7M17 7H7M17 7V17" />
-                </svg>
-              </a>
             </div>
           </div>
         </section>
