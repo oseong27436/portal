@@ -11,8 +11,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const videos = ["stay", "dance", "sorry", "run", "sit", "pushup", "walk", "wtf", "punch"];
   return (
     <html lang="ko">
+      <head>
+        {videos.map((v) => (
+          <link key={v} rel="preload" href={`/${v}.webm`} as="video" type="video/webm" />
+        ))}
+      </head>
       <body>{children}</body>
     </html>
   );

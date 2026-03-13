@@ -87,15 +87,20 @@ export default function Home() {
         {/* Header */}
         <section className="header-section">
           <div className="header-left">
-            <video
-              ref={videoRef}
-              src="/stay.webm"
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{ width: "100%", maxWidth: 560, height: 560, objectFit: "contain" }}
-            />
+            <div style={{ position: "relative", width: "100%", maxWidth: 560, height: 560 }}>
+              {/* Blob */}
+              <div className="video-blob" />
+              <video
+                ref={videoRef}
+                src="/stay.webm"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                style={{ width: "100%", height: 560, objectFit: "contain", position: "relative", zIndex: 1 }}
+              />
+            </div>
 
             {/* Emotion buttons */}
             <div className="emotion-buttons" style={{ justifyContent: "center" }}>
