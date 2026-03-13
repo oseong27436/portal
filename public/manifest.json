@@ -1,0 +1,24 @@
+{
+  "name": "Oseong Shin",
+  "short_name": "Oseong",
+  "description": "오성의 포트폴리오",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fde8f0",
+  "theme_color": "#fde8f0",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
