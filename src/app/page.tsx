@@ -98,7 +98,7 @@ export default function Home() {
             />
 
             {/* Emotion buttons */}
-            <div className="emotion-buttons">
+            <div className="emotion-buttons" style={{ justifyContent: "center" }}>
               {(Object.keys(emotions) as Emotion[]).map((e) => (
                 <button
                   key={e}
@@ -111,7 +111,7 @@ export default function Home() {
             </div>
 
             {/* Name + quote */}
-            <div style={{ marginTop: 28 }}>
+            <div style={{ marginTop: 28, textAlign: "center" }}>
               <h1
                 ref={titleRef}
                 className="header-title font-windsor"
@@ -125,8 +125,8 @@ export default function Home() {
           </div>
 
           {/* Right column */}
-          <div>
-            <div className="meta-info">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="meta-info" style={{ textAlign: "center" }}>
               <div style={{ marginBottom: 32 }}>
                 <div className="meta-label">About</div>
                 <div>직접 쓰고 싶어서 만드는 개발자.<br />아이디어를 코드로 바꾸는 걸 좋아해.</div>
@@ -143,7 +143,7 @@ export default function Home() {
                 <div className="meta-label">Role</div>
                 <div>Developer</div>
               </div>
-              <a href="https://github.com/oseong27436" target="_blank" rel="noopener noreferrer" className="visit-btn">
+              <a href="https://github.com/oseong27436" target="_blank" rel="noopener noreferrer" className="visit-btn" style={{ margin: "0 auto" }}>
                 GitHub
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M7 17L17 7M17 7H7M17 7V17" />

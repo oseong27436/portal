@@ -9,7 +9,8 @@
 
 body {
   font-family: 'IBM Plex Mono', monospace;
-  background: #fafafa;
+  background: linear-gradient(160deg, #fde8f0 0%, #fef3e2 25%, #e8f4fd 55%, #eee8fd 85%, #fde8f0 100%);
+  background-attachment: fixed;
   color: #000;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
