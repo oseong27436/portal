@@ -122,7 +122,7 @@ export default function Home() {
             <h1
               ref={titleRef}
               className="header-title font-windsor"
-              style={{ opacity: 0, transform: "translateY(40px)", marginBottom: 0 }}
+              style={{ marginBottom: 0 }}
             >
               <span className="highlight">Oseong Shin</span>
             </h1>
