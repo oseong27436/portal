@@ -24,7 +24,9 @@ export default function Home() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
   const [emotion, setEmotion] = useState<Emotion>("stay");
+  const [introVisible, setIntroVisible] = useState(true);
 
   const handleEmotion = (e: Emotion) => {
     setEmotion(e);
@@ -33,6 +35,14 @@ export default function Home() {
       videoRef.current.play();
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (introRef.current) introRef.current.classList.add("fade-out");
+      setTimeout(() => setIntroVisible(false), 800);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (titleRef.current) {
@@ -74,6 +84,19 @@ export default function Home() {
 
   return (
     <>
+      {introVisible && (
+        <div ref={introRef} className="intro-overlay">
+          <video
+            src="/sit.webm"
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ width: 320, height: 320, objectFit: "contain" }}
+          />
+        </div>
+      )}
+
       <nav className="nav-fixed">
         <div className="nav-logo">Oseong</div>
         <div className="nav-links">
