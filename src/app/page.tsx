@@ -116,28 +116,37 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: name + quote + meta */}
+          {/* Right: name + info + situation */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 32 }}>
-            {/* Name + quote */}
-            <div>
-              <h1
-                ref={titleRef}
-                className="header-title font-windsor"
-                style={{ opacity: 0, transform: "translateY(40px)", marginBottom: 12, display: "flex", alignItems: "baseline", gap: 12 }}
-              >
-                <span className="highlight">Oseong</span>
-                <span style={{ fontSize: "0.4em", fontFamily: "'IBM Plex Mono', monospace", color: "#999", fontWeight: "normal" }}>(26살)</span>
-              </h1>
-              <p className="emotion-situation">{emotions[emotion].situation}</p>
-              {emotions[emotion].quote && <p className="emotion-quote">"{emotions[emotion].quote}"</p>}
+            {/* Name */}
+            <h1
+              ref={titleRef}
+              className="header-title font-windsor"
+              style={{ opacity: 0, transform: "translateY(40px)", marginBottom: 0 }}
+            >
+              <span className="highlight">Oseong Shin</span>
+            </h1>
+
+            {/* Info table */}
+            <div className="meta-info">
+              <div className="meta-row">
+                <div className="meta-label">Birth</div>
+                <div className="meta-value">2001. 11. 14</div>
+              </div>
+              <div className="meta-row">
+                <div className="meta-label">MBTI</div>
+                <div className="meta-value">INFP</div>
+              </div>
+              <div className="meta-row">
+                <div className="meta-label">About</div>
+                <div className="meta-value">아이디어가 있으면 만들어내야만 하는 성격.</div>
+              </div>
             </div>
 
-            {/* Meta info */}
-            <div className="meta-info">
-              <div>
-                <div className="meta-label">About</div>
-                <div>아이디어가 있으면 만들어내야만 하는 성격.</div>
-              </div>
+            {/* Emotion */}
+            <div>
+              <p className="emotion-situation">{emotions[emotion].situation}</p>
+              {emotions[emotion].quote && <p className="emotion-quote">"{emotions[emotion].quote}"</p>}
             </div>
           </div>
         </section>
