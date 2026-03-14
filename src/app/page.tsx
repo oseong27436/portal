@@ -125,8 +125,8 @@ export default function Home() {
                   playsInline
                   preload="auto"
                   style={{
-                    width: "100%", height: 500, objectFit: "contain",
-                    position: "absolute", top: 0, left: 0, zIndex: 1,
+                    width: "calc(100% - 40px)", height: "calc(100% - 40px)", objectFit: "contain",
+                    position: "absolute", top: 20, left: 20, zIndex: 1,
                     display: emotion === e ? "block" : "none",
                   }}
                 />
