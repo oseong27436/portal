@@ -101,19 +101,18 @@ body {
   margin: 0 auto;
 }
 
-.video-blob {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(ellipse at 40% 40%, #fbc2eb 0%, #a18cd1 40%, #a1c4fd 70%, transparent 100%);
-  filter: blur(90px);
-  opacity: 0.9;
-  border-radius: 50%;
-  z-index: 0;
-  pointer-events: none;
+.video-frame {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 500px;
+  background: #fbf7e7;
+  border-radius: 24px;
+  border: 2px solid rgba(0,0,0,0.08);
+  box-shadow: 0 2px 0 0 rgba(0,0,0,0.06),
+              0 8px 24px rgba(0,0,0,0.08),
+              0 24px 48px rgba(0,0,0,0.05),
+              inset 0 1px 0 rgba(255,255,255,0.9);
 }
 
 .header-left {

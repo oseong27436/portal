@@ -113,8 +113,7 @@ export default function Home() {
         <section className="header-section">
           {/* Left: video + buttons */}
           <div className="header-left">
-            <div style={{ position: "relative", width: "100%", maxWidth: 500, height: 500, background: "#fbf7e7", borderRadius: 24 }}>
-              <div className="video-blob" />
+            <div className="video-frame">
               {emotionKeys.map((e) => (
                 <video
                   key={e}
