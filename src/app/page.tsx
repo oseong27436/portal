@@ -88,14 +88,16 @@ export default function Home() {
     <>
       {introVisible && (
         <div ref={introRef} className="intro-overlay">
-          <video
-            src="/sit.webm"
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{ width: 320, height: 320, objectFit: "contain" }}
-          />
+          <div style={{ width: 320, height: 320, background: "#fbf7e7", borderRadius: 24, border: "3px solid #d4c9b0", boxShadow: "0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <video
+              src="/sit.webm"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: "calc(100% - 40px)", height: "calc(100% - 40px)", objectFit: "contain" }}
+            />
+          </div>
         </div>
       )}
 
