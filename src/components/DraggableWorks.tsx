@@ -160,6 +160,7 @@ export default function DraggableWorks() {
               onDragOver={(e) => handleDragOver(e, id)}
               onDrop={() => handleDrop(id)}
               onDragEnd={handleDragEnd}
+              onClick={() => window.open(p.href, "_blank", "noopener,noreferrer")}
               className="work-card"
               style={cardStyle}
             >
