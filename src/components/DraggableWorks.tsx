@@ -23,8 +23,8 @@ const projectsMap: Record<string, {
     tech: ["Next.js", "Yahoo Finance", "Recharts", "Supabase"],
     preview: "/preview-stocks.png",
     href: "https://stocks-pearl-one.vercel.app",
-    colSpan: 2,
-    rowSpan: 2,
+    colSpan: 1,
+    rowSpan: 1,
   },
   gmepu: {
     name: "지메뿌",
