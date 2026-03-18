@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 
-const galleryItems = Array.from({ length: 16 }, (_, i) => i + 1);
+const DraggableWorks = dynamic(() => import("@/components/DraggableWorks"), { ssr: false });
 
 const tags = ["Design", "Development", "Portfolio", "Bento Grid", "Colourful", "Fun", "Gradient", "Grid", "Illustrative", "Interactive", "Light", "Unusual Layout"];
 
@@ -24,7 +25,6 @@ const emotionKeys = Object.keys(emotions) as Emotion[];
 
 export default function Home() {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<Record<Emotion, HTMLVideoElement | null>>({} as Record<Emotion, HTMLVideoElement | null>);
   const introRef = useRef<HTMLDivElement>(null);
   const [emotion, setEmotion] = useState<Emotion>("stay");
@@ -57,31 +57,6 @@ export default function Home() {
       });
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, idx) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              (entry.target as HTMLElement).style.opacity = "1";
-              (entry.target as HTMLElement).style.transform = "translateY(0)";
-            }, idx * 80);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    itemsRef.current.forEach((el) => {
-      if (el) {
-        el.style.opacity = "0";
-        el.style.transform = "translateY(60px)";
-        el.style.transition = "opacity 0.8s ease, transform 0.8s ease";
-        observer.observe(el);
-      }
-    });
-
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -184,18 +159,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Gallery */}
-        <section className="gallery-section">
-          <div className="gallery-grid">
-            {galleryItems.map((n, i) => (
-              <div
-                key={n}
-                className={`gallery-item item-${n}`}
-                ref={(el) => { itemsRef.current[i] = el; }}
-              />
-            ))}
-          </div>
-        </section>
+        {/* Works */}
+        <DraggableWorks />
+
 
         {/* Tags */}
         <section className="tags-section">
