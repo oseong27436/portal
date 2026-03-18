@@ -120,6 +120,8 @@ export default function DraggableWorks() {
     </div>
   );
 
+  const anyDragging = draggingId !== null;
+
   return (
     <div className="works-section">
       <div className="works-label">Works</div>
@@ -127,7 +129,29 @@ export default function DraggableWorks() {
         {order.map((id) => {
           const p = projectsMap[id];
           const isDragging = draggingId === id;
-          const isOver = overId === id && draggingId !== id;
+          const isOver = overId === id && !isDragging;
+          const isIdle = anyDragging && !isDragging && !isOver;
+
+          const cardStyle: React.CSSProperties = {
+            gridColumn: `span ${p.colSpan}`,
+            gridRow: `span ${p.rowSpan}`,
+            transition: "opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease",
+            cursor: isDragging ? "grabbing" : "grab",
+            ...(isDragging && {
+              opacity: 0.45,
+              transform: "scale(0.97)",
+              filter: "blur(1.5px)",
+              boxShadow: "none",
+            }),
+            ...(isOver && {
+              transform: "scale(1.03)",
+              boxShadow: "0 0 0 2.5px rgba(255,255,255,0.75), 0 16px 48px rgba(0,0,0,0.25)",
+            }),
+            ...(isIdle && {
+              opacity: 0.65,
+            }),
+          };
+
           return (
             <div
               key={id}
@@ -137,15 +161,7 @@ export default function DraggableWorks() {
               onDrop={() => handleDrop(id)}
               onDragEnd={handleDragEnd}
               className="work-card"
-              style={{
-                gridColumn: `span ${p.colSpan}`,
-                gridRow: `span ${p.rowSpan}`,
-                opacity: isDragging ? 0.4 : 1,
-                outline: isOver ? "2px dashed rgba(255,255,255,0.4)" : "none",
-                outlineOffset: "4px",
-                transform: isOver ? "scale(1.02)" : "scale(1)",
-                cursor: isDragging ? "grabbing" : "grab",
-              }}
+              style={cardStyle}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

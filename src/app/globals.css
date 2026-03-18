@@ -314,8 +314,7 @@ body {
   user-select: none;
   background: #111;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  /* grid item이 row 높이를 완전히 채우도록 */
+  /* transition은 DraggableWorks.tsx에서 인라인으로 관리 */
   align-self: stretch;
 }
 
