@@ -1,7 +1,114 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
+
+// HSL helpers
+function hslToRgb(h: number, s: number, l: number): [number, number, number] {
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const hue2rgb = (t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  return s === 0
+    ? [Math.round(l*255), Math.round(l*255), Math.round(l*255)]
+    : [Math.round(hue2rgb(h/360 + 1/3)*255), Math.round(hue2rgb(h/360)*255), Math.round(hue2rgb(h/360 - 1/3)*255)];
+}
+
+function rgbToHue(r: number, g: number, b: number): number {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  if (max === min) return 0;
+  const d = max - min;
+  let h = max === r ? (g - b) / d + (g < b ? 6 : 0)
+        : max === g ? (b - r) / d + 2
+        : (r - g) / d + 4;
+  return (h / 6) * 360;
+}
+
+function ColorPickerCard() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [picking, setPicking] = useState(false);
+  const [swatchColor, setSwatchColor] = useState("#f2ece6");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("site-bg-color");
+    if (saved) {
+      setSwatchColor(saved);
+      document.documentElement.style.setProperty("--site-bg", saved);
+    }
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d")!;
+    const size = canvas.width;
+    const cx = size / 2, cy = size / 2, r = size / 2 - 1;
+    const imageData = ctx.createImageData(size, size);
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const dx = x - cx, dy = y - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > r) continue;
+        const hue = ((Math.atan2(dy, dx) * 180 / Math.PI) + 360) % 360;
+        const sat = dist / r;
+        const [rr, gg, bb] = hslToRgb(hue, sat, 0.5 + (1 - sat) * 0.3);
+        const idx = (y * size + x) * 4;
+        imageData.data[idx] = rr;
+        imageData.data[idx + 1] = gg;
+        imageData.data[idx + 2] = bb;
+        imageData.data[idx + 3] = 255;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }, []);
+
+  const applyColor = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d")!;
+    const rect = canvas.getBoundingClientRect();
+    const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+    const x = Math.round((e.clientX - rect.left) * sx);
+    const y = Math.round((e.clientY - rect.top) * sy);
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    if (Math.sqrt((x-cx)**2 + (y-cy)**2) > canvas.width / 2) return;
+
+    const [rr, gg, bb] = Array.from(ctx.getImageData(x, y, 1, 1).data) as [number, number, number, number];
+    const hue = rgbToHue(rr, gg, bb);
+    const bg = `hsl(${Math.round(hue)}, 28%, 91%)`;
+    document.documentElement.style.setProperty("--site-bg", bg);
+    localStorage.setItem("site-bg-color", bg);
+    setSwatchColor(bg);
+  }, []);
+
+  return (
+    <div className="color-picker-card" style={{ position: "absolute", inset: 0 }}>
+      <div className="color-picker-label">Interface color.</div>
+      <canvas
+        ref={canvasRef}
+        width={180}
+        height={180}
+        className="color-wheel-canvas"
+        onMouseDown={(e) => { setPicking(true); applyColor(e); }}
+        onMouseMove={(e) => picking && applyColor(e)}
+        onMouseUp={() => setPicking(false)}
+        onMouseLeave={() => setPicking(false)}
+        onClick={applyColor}
+      />
+      <div className="color-swatch-row">
+        <div className="color-swatch-dot" style={{ background: swatchColor }} />
+        <span className="color-swatch-value">{swatchColor}</span>
+      </div>
+    </div>
+  );
+}
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -56,9 +163,19 @@ const projectsMap: Record<string, {
     rowSpan: 1,
     category: "works",
   },
+  "color-picker": {
+    name: "Interface color.",
+    desc: "",
+    tech: [],
+    preview: "",
+    href: "",
+    colSpan: 1,
+    rowSpan: 1,
+    category: "item",
+  },
 };
 
-const DEFAULT_ORDER = ["stocks", "gmepu", "inbody"];
+const DEFAULT_ORDER = ["stocks", "gmepu", "inbody", "color-picker"];
 
 export default function DraggableWorks() {
   const [order, setOrder] = useState<string[]>(DEFAULT_ORDER);
@@ -78,8 +195,10 @@ export default function DraggableWorks() {
 
       if (!error && data?.card_order) {
         const parsed = data.card_order as string[];
-        if (Array.isArray(parsed) && parsed.every((id) => id in projectsMap)) {
-          setOrder(parsed);
+        if (Array.isArray(parsed)) {
+          const valid = parsed.filter((id) => id in projectsMap);
+          const newCards = Object.keys(projectsMap).filter((id) => !valid.includes(id));
+          setOrder([...valid, ...newCards]);
         }
       }
       setSynced(true);
@@ -192,42 +311,48 @@ export default function DraggableWorks() {
               onDragOver={(e) => handleDragOver(e, id)}
               onDrop={() => handleDrop(id)}
               onDragEnd={handleDragEnd}
-              onClick={() => window.open(p.href, "_blank", "noopener,noreferrer")}
+              onClick={() => id !== "color-picker" && p.href && window.open(p.href, "_blank", "noopener,noreferrer")}
               className="work-card"
-              style={cardStyle}
+              style={{ ...cardStyle, cursor: id === "color-picker" ? "default" : cardStyle.cursor }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={p.preview}
-                alt={p.name}
-                draggable={false}
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
-              />
-              <div className="work-card-overlay">
-                <div className="work-card-overlay-content">
-                  <div>
-                    <div className="work-card-name">{p.name}</div>
-                    <div className="work-card-desc">{p.desc}</div>
-                  </div>
-                  <div className="work-card-bottom">
-                    <div className="work-card-tags">
-                      {p.tech.map((t) => (
-                        <span key={t} className="work-card-tag">{t}</span>
-                      ))}
+              {id === "color-picker" ? (
+                <ColorPickerCard />
+              ) : (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.preview}
+                    alt={p.name}
+                    draggable={false}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+                  />
+                  <div className="work-card-overlay">
+                    <div className="work-card-overlay-content">
+                      <div>
+                        <div className="work-card-name">{p.name}</div>
+                        <div className="work-card-desc">{p.desc}</div>
+                      </div>
+                      <div className="work-card-bottom">
+                        <div className="work-card-tags">
+                          {p.tech.map((t) => (
+                            <span key={t} className="work-card-tag">{t}</span>
+                          ))}
+                        </div>
+                        <a
+                          href={p.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="work-card-link"
+                          onClick={(e) => e.stopPropagation()}
+                          onMouseDown={(e) => e.stopPropagation()}
+                        >
+                          ↗
+                        </a>
+                      </div>
                     </div>
-                    <a
-                      href={p.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="work-card-link"
-                      onClick={(e) => e.stopPropagation()}
-                      onMouseDown={(e) => e.stopPropagation()}
-                    >
-                      ↗
-                    </a>
                   </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           );
         })}
