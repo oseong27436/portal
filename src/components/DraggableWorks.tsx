@@ -8,6 +8,14 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type Category = "works" | "item";
+
+const FILTERS: { label: string; value: "all" | Category }[] = [
+  { label: "All", value: "all" },
+  { label: "Works", value: "works" },
+  { label: "Item", value: "item" },
+];
+
 const projectsMap: Record<string, {
   name: string;
   desc: string;
@@ -16,6 +24,7 @@ const projectsMap: Record<string, {
   href: string;
   colSpan: number;
   rowSpan: number;
+  category: Category;
 }> = {
   stocks: {
     name: "Stocks",
@@ -25,6 +34,7 @@ const projectsMap: Record<string, {
     href: "https://stocks-pearl-one.vercel.app",
     colSpan: 1,
     rowSpan: 1,
+    category: "works",
   },
   gmepu: {
     name: "지메뿌",
@@ -34,6 +44,7 @@ const projectsMap: Record<string, {
     href: "https://gmepu.vercel.app",
     colSpan: 1,
     rowSpan: 1,
+    category: "works",
   },
   inbody: {
     name: "Inbody",
@@ -43,6 +54,7 @@ const projectsMap: Record<string, {
     href: "https://inbody-tau.vercel.app",
     colSpan: 1,
     rowSpan: 1,
+    category: "works",
   },
 };
 
@@ -53,6 +65,7 @@ export default function DraggableWorks() {
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
   const [synced, setSynced] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<"all" | Category>("all");
 
   // Supabase에서 순서 불러오기
   useEffect(() => {
@@ -108,9 +121,15 @@ export default function DraggableWorks() {
     setOverId(null);
   };
 
+  const filteredOrder = activeFilter === "all"
+    ? order
+    : order.filter((id) => projectsMap[id].category === activeFilter);
+
   if (!synced) return (
     <div className="works-section">
-      <div className="works-label">Works</div>
+      <div className="works-header">
+        <div className="works-label">Works</div>
+      </div>
       <div className="works-grid-layout works-loading">
         {DEFAULT_ORDER.map((id) => (
           <div key={id} className="work-card work-card-skeleton"
@@ -124,9 +143,22 @@ export default function DraggableWorks() {
 
   return (
     <div className="works-section">
-      <div className="works-label">Works</div>
+      <div className="works-header">
+        <div className="works-label">Works</div>
+        <div className="works-filters">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              className={`works-filter-btn${activeFilter === f.value ? " active" : ""}`}
+              onClick={() => setActiveFilter(f.value)}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="works-grid-layout">
-        {order.map((id) => {
+        {filteredOrder.map((id) => {
           const p = projectsMap[id];
           const isDragging = draggingId === id;
           const isOver = overId === id && !isDragging;
