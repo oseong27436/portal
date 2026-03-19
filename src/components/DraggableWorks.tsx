@@ -34,6 +34,7 @@ function ColorPickerCard() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [picking, setPicking] = useState(false);
   const [swatchColor, setSwatchColor] = useState("#f2ece6");
+  const [indicatorPos, setIndicatorPos] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("site-bg-color");
@@ -86,22 +87,46 @@ function ColorPickerCard() {
     document.documentElement.style.setProperty("--site-bg", bg);
     localStorage.setItem("site-bg-color", bg);
     setSwatchColor(bg);
+    // 인디케이터 위치: canvas 내 비율로 저장
+    const rect2 = canvas.getBoundingClientRect();
+    setIndicatorPos({
+      x: (e.clientX - rect2.left) / rect2.width * 100,
+      y: (e.clientY - rect2.top) / rect2.height * 100,
+    });
   }, []);
 
   return (
     <div className="color-picker-card" style={{ position: "absolute", inset: 0 }}>
       <div className="color-picker-label">Interface color.</div>
-      <canvas
-        ref={canvasRef}
-        width={180}
-        height={180}
-        className="color-wheel-canvas"
-        onMouseDown={(e) => { setPicking(true); applyColor(e); }}
-        onMouseMove={(e) => picking && applyColor(e)}
-        onMouseUp={() => setPicking(false)}
-        onMouseLeave={() => setPicking(false)}
-        onClick={applyColor}
-      />
+      <div style={{ position: "relative", display: "inline-block" }}>
+        <canvas
+          ref={canvasRef}
+          width={180}
+          height={180}
+          className="color-wheel-canvas"
+          onMouseDown={(e) => { setPicking(true); applyColor(e); }}
+          onMouseMove={(e) => picking && applyColor(e)}
+          onMouseUp={() => setPicking(false)}
+          onMouseLeave={() => setPicking(false)}
+          onClick={applyColor}
+        />
+        {indicatorPos && (
+          <div style={{
+            position: "absolute",
+            left: `${indicatorPos.x}%`,
+            top: `${indicatorPos.y}%`,
+            transform: "translate(-50%, -50%)",
+            width: 14,
+            height: 14,
+            borderRadius: "50%",
+            border: "2.5px solid #fff",
+            boxShadow: "0 0 0 1.5px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3)",
+            background: swatchColor,
+            pointerEvents: "none",
+            transition: "left 0.05s, top 0.05s",
+          }} />
+        )}
+      </div>
       <div className="color-swatch-row">
         <div className="color-swatch-dot" style={{ background: swatchColor }} />
         <span className="color-swatch-value">{swatchColor}</span>
