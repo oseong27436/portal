@@ -11,7 +11,7 @@ const projects: Record<string, {
   desc: string;
   overview: string;
   story: string[];
-  features?: { icon: string; title: string; desc: string }[];
+  features?: { icon: string; title: string; desc: string; img?: string }[];
   context?: string;
   screens: { src: string; caption: string }[];
 }> = {
@@ -53,9 +53,9 @@ const projects: Record<string, {
       "메모를 많이 뿌릴수록 그 장소에 대화방을 개설할 수 있는 권한이 생긴다. 팔로우 없이 공간으로만 연결되는 구조다.",
     ],
     features: [
-      { icon: "📍", title: "위치 기반 메모 뿌리기", desc: "현재 위치에 짧은 메모를 핀으로 꽂기" },
-      { icon: "🗂️", title: "전체 / 친구 / 🔥 핫 필터", desc: "원하는 메모만 골라서 탐색" },
-      { icon: "🔢", title: "메모 클러스터링", desc: "밀집 지역은 숫자 뱃지로 묶어 표시" },
+      { icon: "📍", title: "위치 기반 메모 뿌리기", desc: "현재 위치에 짧은 메모를 핀으로 꽂기", img: "/feat-gmepu-memo.png" },
+      { icon: "🗂️", title: "전체 / 친구 / 🔥 핫 필터", desc: "원하는 메모만 골라서 탐색", img: "/feat-gmepu-filter.png" },
+      { icon: "🔢", title: "메모 클러스터링", desc: "밀집 지역은 숫자 뱃지로 묶어 표시", img: "/feat-gmepu-cluster.png" },
       { icon: "💬", title: "위치 기반 대화방", desc: "메모 누적 시 그 장소에 대화방 개설 권한" },
     ],
     context: "서비스디자인 수업 팀 프로젝트 최종 채택 아이템. '한국판 지도 기반 레딧' 컨셉으로, 위치 데이터가 쌓일수록 핫플 데이터 자산이 된다는 논리. 장기 전략은 네이버 지도 인수.",
@@ -167,14 +167,20 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>
               {p.features.map((f, i) => (
                 <div key={i} style={{
-                  padding: "28px 24px",
                   border: "1px solid rgba(0,0,0,0.08)",
                   borderRadius: 16,
                   background: "#fafafa",
+                  overflow: "hidden",
                 }}>
-                  <div style={{ fontSize: 24, marginBottom: 12 }}>{f.icon}</div>
-                  <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6, color: "#111" }}>{f.title}</div>
-                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6 }}>{f.desc}</div>
+                  {f.img && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={f.img} alt={f.title} style={{ width: "100%", display: "block", borderBottom: "1px solid rgba(0,0,0,0.06)" }} />
+                  )}
+                  <div style={{ padding: "20px 24px" }}>
+                    <div style={{ fontSize: 20, marginBottom: 8 }}>{f.icon}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6, color: "#111" }}>{f.title}</div>
+                    <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6 }}>{f.desc}</div>
+                  </div>
                 </div>
               ))}
             </div>
