@@ -336,7 +336,7 @@ export default function DraggableWorks() {
               onDragOver={(e) => handleDragOver(e, id)}
               onDrop={() => handleDrop(id)}
               onDragEnd={handleDragEnd}
-              onClick={() => id !== "color-picker" && p.href && window.open(p.href, "_blank", "noopener,noreferrer")}
+              onClick={() => id !== "color-picker" && (window.location.href = `/works/${id}`)}
               className="work-card"
               style={{ ...cardStyle, cursor: id === "color-picker" ? "default" : cardStyle.cursor }}
             >
