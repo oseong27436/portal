@@ -9,21 +9,30 @@ const projects: Record<string, {
   href: string;
   color: string;
   desc: string;
+  overview: string;
   story: string[];
+  features?: { icon: string; title: string; desc: string }[];
+  context?: string;
   screens: { src: string; caption: string }[];
 }> = {
   stocks: {
     name: "Stocks",
     slug: "stocks",
     year: "2025",
-    tech: ["Next.js", "Yahoo Finance", "Recharts", "Supabase"],
+    tech: ["Next.js", "Yahoo Finance", "Recharts", "Supabase", "Google Auth"],
     href: "https://stocks-pearl-one.vercel.app",
     color: "#0ea5e9",
     desc: "해외 주식 포트폴리오 트래커",
+    overview: "국내외 주식을 한곳에서 관리하고, 친구들과 수익률을 실시간으로 비교하는 포트폴리오 트래커.",
     story: [
       "주식을 시작했는데 수익률 계산을 매번 엑셀로 하기가 너무 귀찮았다.",
-      "그냥 내가 원하는 대로 만들어버리자 싶었음. 티커 검색하면 실시간 시세 붙어서 바로 추가되고, 원화/달러 환산도 자동으로. 그리고 친구들이랑 수익률 비교하는 그룹 기능도 넣었다.",
-      "처음엔 나 혼자 쓰려고 만든 건데 친구들한테 보여줬더니 다들 써보고 싶다고 해서 로그인 기능이랑 그룹 기능까지 추가하게 됐다.",
+      "티커 검색하면 실시간 시세가 붙어서 바로 추가되고, 원화/달러 환산도 자동으로 계산된다. 처음엔 나 혼자 쓰려고 만든 건데 친구들한테 보여줬더니 다들 써보고 싶다고 해서 그룹 기능까지 추가하게 됐다.",
+    ],
+    features: [
+      { icon: "📊", title: "실시간 시세 연동", desc: "티커 검색 시 현재가 자동 반영" },
+      { icon: "💱", title: "원화/달러 자동 환산", desc: "실시간 환율 기반 수익률 계산" },
+      { icon: "👥", title: "그룹 수익률 비교", desc: "친구들과 수익률 실시간 랭킹" },
+      { icon: "📈", title: "히스토리 그래프", desc: "일별 포트폴리오 스냅샷 자동 저장" },
     ],
     screens: [
       { src: "/shot-stocks-1.png", caption: "랜딩 페이지" },
@@ -38,14 +47,21 @@ const projects: Record<string, {
     href: "https://gmepu.vercel.app",
     color: "#f5c800",
     desc: "지도에 메모 뿌리기",
+    overview: "현재 위치에 짧은 메모를 남기면 지도 위에 포스트잇 핀으로 꽂힌다. 길을 걷다 낯선 사람의 메모를 발견하고, 나도 그 자리에 흔적을 남기는 위치 기반 익명 커뮤니티.",
     story: [
-      "서비스디자인 수업 첫 팀 회의 다음날 바로 만들었다. 팀원이 아이디어 회의에서 '스팟마다 기록 남기기'를 던졌고, 나는 그걸 그날 밤 구현해서 오후 1시에 단톡방에 링크를 올렸다. 팀원 반응은 '하루만에 이게 나와요?'였다.",
-      "지메뿌는 지도(지) + 메모(메) + 뿌리기(뿌)의 합성어. Google Auth로 로그인하면 현재 위치에 짧은 메모를 뿌릴 수 있다. 뿌려진 메모는 지도 위에 포스트잇 핀으로 쌓이고, 전체/친구/🔥핫 필터로 탐색할 수 있다. 메모를 많이 쓸수록 그 장소에 대화방을 열 권한이 생기는 구조다.",
-      "팀 과제 최종 아이템으로 채택됐다. 컨셉은 '한국판 지도 기반 레딧'. 레딧이 AI 학습 소스 1위인 것처럼, 지메뿌도 위치 기반 데이터 자산이 된다는 논리다. 엑싯 전략은 네이버 지도 인수. 가장 많이 공격받을 질문인 '네이버 지도와 차이점'에 대한 선제 대응이기도 하다.",
+      "지메뿌는 '지도에 메모 뿌리기'의 줄임말. Google 로그인 후 지도를 열면 주변에 다른 사람들이 뿌린 메모들이 보인다. 메모가 많이 쌓인 장소는 숫자 클러스터로 묶이고, 전체 / 친구 / 🔥 핫 필터로 원하는 메모만 골라 볼 수 있다.",
+      "메모를 많이 뿌릴수록 그 장소에 대화방을 개설할 수 있는 권한이 생긴다. 팔로우 없이 공간으로만 연결되는 구조다.",
     ],
+    features: [
+      { icon: "📍", title: "위치 기반 메모 뿌리기", desc: "현재 위치에 짧은 메모를 핀으로 꽂기" },
+      { icon: "🗂️", title: "전체 / 친구 / 🔥 핫 필터", desc: "원하는 메모만 골라서 탐색" },
+      { icon: "🔢", title: "메모 클러스터링", desc: "밀집 지역은 숫자 뱃지로 묶어 표시" },
+      { icon: "💬", title: "위치 기반 대화방", desc: "메모 누적 시 그 장소에 대화방 개설 권한" },
+    ],
+    context: "서비스디자인 수업 팀 프로젝트 최종 채택 아이템. '한국판 지도 기반 레딧' 컨셉으로, 위치 데이터가 쌓일수록 핫플 데이터 자산이 된다는 논리. 장기 전략은 네이버 지도 인수.",
     screens: [
-      { src: "/shot-gmepu-login.png", caption: "메모 뿌리기 — Google 로그인 필요, 실제 메모 핀 분포" },
-      { src: "/shot-gmepu-map.png", caption: "홍대/신촌 일대 — 실제 누적된 메모 35개 클러스터" },
+      { src: "/shot-gmepu-login.png", caption: "메모 뿌리기 — Google 로그인 연동, 실제 메모 핀 분포" },
+      { src: "/shot-gmepu-map.png", caption: "홍대/신촌 일대 — 실제 누적 메모 클러스터" },
     ],
   },
   inbody: {
@@ -56,10 +72,10 @@ const projects: Record<string, {
     href: "https://inbody-tau.vercel.app",
     color: "#22c55e",
     desc: "인바디 기록 대시보드",
+    overview: "인바디 측정값을 날짜별로 기록하고 체성분 변화를 그래프로 추적하는 개인용 대시보드.",
     story: [
       "헬스장에서 인바디 찍을 때마다 종이로 주는데 그게 쌓이기만 하고 변화를 한눈에 볼 수가 없었다.",
-      "체중, 골격근량, 체지방률을 날짜별로 입력해두면 그래프로 추세를 볼 수 있다. 내 몸 변화를 데이터로 보니까 운동 자극이 확실히 됨.",
-      "기록 자체는 사적인 것이라 완전히 개인용으로 만들었다. 내가 쓰는 용도.",
+      "체중, 골격근량, 체지방률을 날짜별로 입력해두면 그래프로 추세를 볼 수 있다. 완전 개인용으로 만들었다.",
     ],
     screens: [
       { src: "/shot-inbody-1.png", caption: "대시보드 — 체성분 변화 그래프" },
@@ -89,9 +105,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
       <div style={{ paddingTop: 80 }}>
         {/* Hero */}
         <section style={{ padding: "80px 80px 60px", maxWidth: 1200, margin: "0 auto" }}>
-          <Link href="/" className="back-link">
-            ← Works
-          </Link>
+          <Link href="/" className="back-link">← Works</Link>
 
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
             <div>
@@ -108,8 +122,11 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               }}>
                 {p.name}
               </h1>
-              <p style={{ fontSize: 16, color: "#666", fontFamily: "'IBM Plex Mono', monospace" }}>
+              <p style={{ fontSize: 16, color: "#666", fontFamily: "'IBM Plex Mono', monospace", marginBottom: 20 }}>
                 {p.desc}
+              </p>
+              <p style={{ fontSize: 15, color: "#333", lineHeight: 1.7, maxWidth: 560 }}>
+                {p.overview}
               </p>
             </div>
 
@@ -134,41 +151,65 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
             boxShadow: "0 20px 60px rgba(0,0,0,0.1)",
           }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={p.screens[0].src}
-              alt={p.screens[0].caption}
-              style={{ width: "100%", display: "block" }}
-            />
+            <img src={p.screens[0].src} alt={p.screens[0].caption} style={{ width: "100%", display: "block" }} />
           </div>
           <p style={{ marginTop: 12, fontSize: 11, color: "#999", fontFamily: "'IBM Plex Mono', monospace" }}>
             {p.screens[0].caption}
           </p>
         </section>
 
+        {/* Features */}
+        {p.features && (
+          <section style={{ padding: "0 80px 80px", maxWidth: 1200, margin: "0 auto" }}>
+            <div style={{ fontSize: 11, color: "#999", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 32 }}>
+              Features
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>
+              {p.features.map((f, i) => (
+                <div key={i} style={{
+                  padding: "28px 24px",
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  borderRadius: 16,
+                  background: "#fafafa",
+                }}>
+                  <div style={{ fontSize: 24, marginBottom: 12 }}>{f.icon}</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 6, color: "#111" }}>{f.title}</div>
+                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6 }}>{f.desc}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Story + second screen */}
         <section style={{
           padding: "0 80px 80px", maxWidth: 1200, margin: "0 auto",
           display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "start",
         }}>
-          {/* Story */}
           <div>
             <div style={{ fontSize: 11, color: "#999", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 24 }}>
-              Story
+              Background
             </div>
             {p.story.map((para, i) => (
               <p key={i} style={{
                 fontFamily: "'Noto Serif KR', serif",
-                fontSize: 16,
-                lineHeight: 2,
-                color: "#333",
-                marginBottom: 24,
+                fontSize: 16, lineHeight: 2, color: "#333", marginBottom: 24,
               }}>
                 {para}
               </p>
             ))}
+            {p.context && (
+              <div style={{
+                marginTop: 8, padding: "20px 24px",
+                background: "#f5f5f5", borderRadius: 12,
+                fontSize: 13, color: "#555", lineHeight: 1.8,
+                fontFamily: "'IBM Plex Mono', monospace",
+              }}>
+                {p.context}
+              </div>
+            )}
           </div>
 
-          {/* Second screenshot */}
           {p.screens[1] && (
             <div style={{ position: "sticky", top: 100 }}>
               <div style={{
@@ -177,11 +218,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
                 boxShadow: "0 12px 40px rgba(0,0,0,0.1)",
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.screens[1].src}
-                  alt={p.screens[1].caption}
-                  style={{ width: "100%", display: "block" }}
-                />
+                <img src={p.screens[1].src} alt={p.screens[1].caption} style={{ width: "100%", display: "block" }} />
               </div>
               <p style={{ marginTop: 10, fontSize: 11, color: "#999", fontFamily: "'IBM Plex Mono', monospace" }}>
                 {p.screens[1].caption}
@@ -216,7 +253,6 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               background: "#000", color: "#fff",
               borderRadius: 30, textDecoration: "none",
               fontSize: 13, fontFamily: "'IBM Plex Mono', monospace",
-              transition: "opacity 0.2s",
             }}
           >
             실제 사이트 보기 ↗
