@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
+const SB = "https://ovbkdgjrkstzyahidyzv.supabase.co/storage/v1/object/public/portal";
+
 const projects: Record<string, {
   name: string;
   slug: string;
@@ -15,6 +17,30 @@ const projects: Record<string, {
   context?: string;
   screens: { src: string; caption: string }[];
 }> = {
+  bridge: {
+    name: "Bridge",
+    slug: "bridge",
+    year: "2026",
+    tech: ["Next.js", "Supabase SSR", "shadcn/ui", "dnd-kit", "next-intl"],
+    href: "https://bridge-green-theta.vercel.app",
+    color: "#059669",
+    desc: "일본에서 열리는 한국 문화 이벤트 플랫폼",
+    overview: "일본에 사는 한국인, 혹은 한국 문화에 관심 있는 일본인을 위한 이벤트 발견 플랫폼. 이벤트를 탐색하고 코르크보드에 후기를 드래그로 꽂으며, 4개국어(일·한·영·중)로 언어 장벽 없이 쓸 수 있다.",
+    story: [
+      "GDGoC 한일 해커톤을 준비하면서 만든 프로젝트. 일본에서 열리는 한국 관련 이벤트 정보가 SNS에 흩어져 있고 검색도 안 된다는 문제에서 출발했다.",
+      "언어 장벽 때문에 한국인도 일본인도 서로의 이벤트를 놓치는 상황이었다. 4개국어 지원으로 누구나 자기 언어로 이벤트를 탐색할 수 있게 했고, 코르크보드에 드래그로 후기를 꽂는 인터랙션은 오프라인 이벤트 현장 느낌을 디지털로 옮기려는 시도다.",
+    ],
+    features: [
+      { icon: "🔍", title: "이벤트 탐색", desc: "오사카·도쿄 지역 한국 문화 이벤트를 날짜·카테고리 필터로 탐색" },
+      { icon: "📌", title: "코르크보드 리뷰", desc: "참여 후기를 포스트잇처럼 드래그해서 코르크보드에 자유 배치" },
+      { icon: "🌏", title: "4개국어 지원", desc: "일·한·영·중 전환으로 언어 장벽 없이 탐색" },
+      { icon: "🛠️", title: "관리자 패널", desc: "이벤트 등록·수정·삭제 및 리뷰 관리" },
+    ],
+    context: "GDGoC Korea × Japan Hackathon 2026 출품작. '한국판 지도 기반 이벤트 허브' 컨셉.",
+    screens: [
+      { src: `${SB}/preview-bridge.jpg`, caption: "이벤트 탐색 메인 — 오사카 한국 문화 이벤트" },
+    ],
+  },
   stocks: {
     name: "Stocks",
     slug: "stocks",
@@ -35,15 +61,14 @@ const projects: Record<string, {
       { icon: "📈", title: "히스토리 그래프", desc: "일별 포트폴리오 스냅샷 자동 저장" },
     ],
     screens: [
-      { src: "/shot-stocks-1.png", caption: "랜딩 페이지" },
-      { src: "/shot-stocks-dashboard.png", caption: "대시보드 — 실시간 포트폴리오" },
+      { src: `${SB}/preview-stocks.jpg`, caption: "메인 페이지 — 포트폴리오 트래커" },
     ],
   },
   gmepu: {
     name: "지메뿌",
     slug: "gmepu",
     year: "2026",
-    tech: ["Next.js", "Google Maps API", "Supabase", "Google Auth"],
+    tech: ["Next.js", "Google Maps API", "Supabase", "Framer Motion", "Google Auth"],
     href: "https://gmepu.vercel.app",
     color: "#f5c800",
     desc: "지도에 메모 뿌리기",
@@ -53,32 +78,15 @@ const projects: Record<string, {
       "메모를 많이 뿌릴수록 그 장소에 대화방을 개설할 수 있는 권한이 생긴다. 팔로우 없이 공간으로만 연결되는 구조다.",
     ],
     features: [
-      { icon: "📍", title: "위치 기반 메모 뿌리기", desc: "현재 위치에 짧은 메모를 핀으로 꽂기", img: "/feat-gmepu-memo.png" },
-      { icon: "🗂️", title: "전체 / 친구 / 🔥 핫 필터", desc: "원하는 메모만 골라서 탐색", img: "/feat-gmepu-filter.png" },
-      { icon: "🔢", title: "메모 클러스터링", desc: "밀집 지역은 숫자 뱃지로 묶어 표시", img: "/feat-gmepu-cluster.png" },
+      { icon: "📍", title: "위치 기반 메모 뿌리기", desc: "현재 위치에 짧은 메모를 핀으로 꽂기" },
+      { icon: "🗂️", title: "전체 / 친구 / 🔥 핫 필터", desc: "원하는 메모만 골라서 탐색" },
+      { icon: "🔢", title: "메모 클러스터링", desc: "밀집 지역은 숫자 뱃지로 묶어 표시" },
       { icon: "💬", title: "위치 기반 대화방", desc: "메모 누적 시 그 장소에 대화방 개설 권한" },
     ],
-    context: "서비스디자인 수업 팀 프로젝트 최종 채택 아이템. '한국판 지도 기반 레딧' 컨셉으로, 위치 데이터가 쌓일수록 핫플 데이터 자산이 된다는 논리. 장기 전략은 네이버 지도 인수.",
+    context: "서비스디자인 수업 팀 프로젝트 최종 채택 아이템. '한국판 지도 기반 레딧' 컨셉으로, 위치 데이터가 쌓일수록 핫플 데이터 자산이 된다는 논리.",
     screens: [
-      { src: "/shot-gmepu-login.png", caption: "메모 뿌리기 — Google 로그인 연동, 실제 메모 핀 분포" },
-      { src: "/shot-gmepu-map.png", caption: "홍대/신촌 일대 — 실제 누적 메모 클러스터" },
-    ],
-  },
-  inbody: {
-    name: "Inbody",
-    slug: "inbody",
-    year: "2025",
-    tech: ["Next.js", "Recharts", "Supabase"],
-    href: "https://inbody-tau.vercel.app",
-    color: "#22c55e",
-    desc: "인바디 기록 대시보드",
-    overview: "인바디 측정값을 날짜별로 기록하고 체성분 변화를 그래프로 추적하는 개인용 대시보드.",
-    story: [
-      "헬스장에서 인바디 찍을 때마다 종이로 주는데 그게 쌓이기만 하고 변화를 한눈에 볼 수가 없었다.",
-      "체중, 골격근량, 체지방률을 날짜별로 입력해두면 그래프로 추세를 볼 수 있다. 완전 개인용으로 만들었다.",
-    ],
-    screens: [
-      { src: "/shot-inbody-1.png", caption: "대시보드 — 체성분 변화 그래프" },
+      { src: `${SB}/preview-gmepu.jpg`, caption: "랜딩 페이지 — 메모 핀 분포" },
+      { src: `${SB}/preview-gmepu-map.jpg`, caption: "지도 화면 — 위치 권한 요청 및 메모 탐색" },
     ],
   },
 };
