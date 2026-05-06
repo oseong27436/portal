@@ -15,6 +15,7 @@ const projects: Record<string, {
   story: string[];
   features?: { icon: string; title: string; desc: string; img?: string }[];
   context?: string;
+  instagram?: string;
   screens: { src: string; caption: string }[];
 }> = {
   bridge: {
@@ -25,10 +26,10 @@ const projects: Record<string, {
     href: "https://bridge-green-theta.vercel.app",
     color: "#f97316",
     desc: "오사카 국제 교류 커뮤니티 플랫폼",
-    overview: "오사카에서 실제로 활동 중인 국제 교류 단체 Bridge의 공식 웹사이트. 일본인과 외국인이 함께 어울리는 이 커뮤니티가 라인 단체방으로만 운영되던 한계를 넘어, 이벤트 등록·참가 예약·코르크보드 리뷰까지 갖춘 플랫폼으로 2026년 6월 정식 운영 예정.",
+    overview: "오사카에서 현재 활동 중인 국제 교류 단체 Bridge의 공식 웹사이트. 일본인과 외국인이 함께 어울리는 커뮤니티를 위해 이벤트 등록·참가 예약·코르크보드 리뷰까지 갖춘 플랫폼으로 현재 서비스 중.",
     story: [
       "전역 후 워킹홀리데이로 오사카에 처음 갔을 때 Bridge를 통해 현지 커뮤니티에 녹아들었다. 이후 고베가쿠인대학(KGU)으로 교환학생(2025년)을 다시 가면서 또 Bridge 활동을 이어갔다.",
-      "커뮤니티가 라인 단체방 하나로만 굴러가고 있었다. 이벤트 공지는 묻히고, 누가 참가하는지 파악이 안 되고, 후기는 사라졌다. 직접 만들어주기로 했고, 현재 테스트 마무리 단계로 2026년 6월부터 실제 운영에 들어갈 예정이다.",
+      "커뮤니티에 더 도움이 되고 싶었다. 이벤트 개설부터 참가 예약, 후기 작성까지 한 곳에서 처리할 수 있는 플랫폼을 직접 만들어주기로 했다.",
     ],
     features: [
       { icon: "📅", title: "이벤트 등록 & 예약", desc: "이벤트 개설부터 참가 예약까지 한 곳에서 처리" },
@@ -36,7 +37,8 @@ const projects: Record<string, {
       { icon: "🌏", title: "다국어 지원", desc: "일·한·영 전환으로 외국인 멤버도 언어 장벽 없이" },
       { icon: "🛠️", title: "관리자 패널", desc: "호스트가 직접 이벤트 관리, 참가자 확인" },
     ],
-    context: "오사카에서 현재 활동 중인 국제 교류 커뮤니티 Bridge(@bridge_jpofficial)의 웹사이트 제작 의뢰를 받아 개발. 2026년 6월 정식 운영 예정.",
+    context: "오사카에서 현재 활동 중인 국제 교류 커뮤니티 Bridge의 공식 웹사이트 제작 의뢰를 받아 개발. 현재 서비스 운영 중.",
+    instagram: "https://www.instagram.com/bridge_jpofficial/",
     screens: [
       { src: `${SB}/preview-bridge-main.jpg`, caption: "Bridge Osaka 메인 — 국제 교류 이벤트 허브" },
       { src: `${SB}/preview-bridge-cork.jpg`, caption: "みんなのレビュー — 코르크보드 후기" },
@@ -222,6 +224,23 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               }}>
                 {p.context}
               </div>
+            )}
+            {p.instagram && (
+              <a
+                href={p.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  marginTop: 16,
+                  fontSize: 13, color: "#555",
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  textDecoration: "none",
+                }}
+              >
+                <span style={{ color: "#999" }}>활동 중인 인스타</span>
+                <span style={{ color: "#333" }}>↗ @bridge_jpofficial</span>
+              </a>
             )}
           </div>
 
